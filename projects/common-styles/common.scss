@@ -1,0 +1,23 @@
+body {
+  font-family: Lato, arial, sans-serif;
+}
+
+h1  {
+  margin: 5% 0;
+  text-align: center;
+}
+
+.app-wrapper {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.review {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5%;
+}
+
+.review__col {
+  width: 48%;
+}

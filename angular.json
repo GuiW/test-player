@@ -2,5 +2,255 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
-  "projects": {}
+  "projects": {
+    "plyr-player": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/plyr-player",
+      "sourceRoot": "projects/plyr-player/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/plyr-player",
+            "index": "projects/plyr-player/src/index.html",
+            "main": "projects/plyr-player/src/main.ts",
+            "polyfills": "projects/plyr-player/src/polyfills.ts",
+            "tsConfig": "projects/plyr-player/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/plyr-player/src/favicon.ico",
+              "projects/plyr-player/src/assets"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "projects/common-styles/common.scss",
+              "node_modules/plyr/dist/plyr.css",
+              "projects/plyr-player/src/styles.scss"
+            ],
+            "scripts": [
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/plyr-player/src/environments/environment.ts",
+                  "with": "projects/plyr-player/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "plyr-player:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "plyr-player:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "plyr-player:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/plyr-player/src/test.ts",
+            "polyfills": "projects/plyr-player/src/polyfills.ts",
+            "tsConfig": "projects/plyr-player/tsconfig.spec.json",
+            "karmaConfig": "projects/plyr-player/karma.conf.js",
+            "assets": [
+              "projects/plyr-player/src/favicon.ico",
+              "projects/plyr-player/src/assets"
+            ],
+            "styles": [
+              "projects/plyr-player/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/plyr-player/tsconfig.app.json",
+              "projects/plyr-player/tsconfig.spec.json",
+              "projects/plyr-player/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/plyr-player/e2e/protractor.conf.js",
+            "devServerTarget": "plyr-player:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "plyr-player:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "videojs-player": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/videojs-player",
+      "sourceRoot": "projects/videojs-player/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/videojs-player",
+            "index": "projects/videojs-player/src/index.html",
+            "main": "projects/videojs-player/src/main.ts",
+            "polyfills": "projects/videojs-player/src/polyfills.ts",
+            "tsConfig": "projects/videojs-player/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/videojs-player/src/favicon.ico",
+              "projects/videojs-player/src/assets"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "projects/common-styles/common.scss",
+              "projects/videojs-player/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/videojs-player/src/environments/environment.ts",
+                  "with": "projects/videojs-player/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "videojs-player:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "videojs-player:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "videojs-player:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/videojs-player/src/test.ts",
+            "polyfills": "projects/videojs-player/src/polyfills.ts",
+            "tsConfig": "projects/videojs-player/tsconfig.spec.json",
+            "karmaConfig": "projects/videojs-player/karma.conf.js",
+            "assets": [
+              "projects/videojs-player/src/favicon.ico",
+              "projects/videojs-player/src/assets"
+            ],
+            "styles": [
+              "projects/videojs-player/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/videojs-player/tsconfig.app.json",
+              "projects/videojs-player/tsconfig.spec.json",
+              "projects/videojs-player/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/videojs-player/e2e/protractor.conf.js",
+            "devServerTarget": "videojs-player:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "videojs-player:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "plyr-player"
 }

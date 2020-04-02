@@ -1,0 +1,18 @@
+<div class="review">
+  <div class="review__col review__pros alert alert-success" *ngIf="review.pros.length > 0">
+    <h2>Pros</h2>
+    <ul>
+      <li *ngFor="let pro of review.pros">
+        {{pro}}
+      </li>
+    </ul>
+  </div>
+  <div class="review__col review__cons alert alert-danger" *ngIf="review.cons.length > 0">
+    <h2>Cons</h2>
+    <ul>
+      <li *ngFor="let con of review.cons">
+        {{con}}
+      </li>
+    </ul>
+  </div>
+</div>

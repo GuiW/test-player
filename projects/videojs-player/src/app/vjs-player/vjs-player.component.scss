@@ -1,0 +1,22 @@
+@import '~video.js/dist/video-js.css';
+
+$custom-vjs-color: cornflowerblue;
+
+.custom-vjs .vjs-big-play-button {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+  color: $custom-vjs-color;
+  border-color: $custom-vjs-color;
+}
+
+.custom-vjs:hover {
+  .vjs-big-play-button {
+    color: white;
+  }
+}
+
+.btn-wrapper {
+  margin-top: 2%;
+  text-align: center;
+}
