@@ -13,76 +13,107 @@ import 'videojs-contrib-quality-levels';
 })
 export class VjsPlayerComponent implements OnInit, OnDestroy {
   @ViewChild('target', {static: true}) target: ElementRef;
+  @ViewChild('progress', {static: true}) progress: ElementRef;
+
+  constructor(private elementRef: ElementRef) {
+  }
+
   // see options: https://github.com/videojs/video.js/blob/mastertutorial-options.html
   options = {
     muted: true,
     fluid: true,
     aspectRatio: '16:9',
-    autoplay: false,
+    autoplay: true,
     controls: true,
     sources: [
       {
         src: 'https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8',
         type: 'application/x-mpegURL',
-        withCredentials: false
+        withCredentials: false,
       }
-    ]
+    ],
+    poster: 'https://via.placeholder.com/1920x1080.png?text=Placeholder+poster'
   };
-  player: videojs.Player;
-  toggleQuality;
-  qualityBtnText = 'Change quality';
-  enable360 = true;
 
-  constructor(
-    private elementRef: ElementRef,
-  ) {
+  player: videojs.Player;
+  qualityLevels = [];
+  hdResolution = 720;
+  qualityHDEnabled = true;
+  videoDuration: number;
+  videoCurrentTime = 0;
+  videoCurrentTimeInSeconds: string;
+  bookmarkList: {
+    currentTimeInSeconds: number
+    currentTime: string
+  }[] = [];
+
+  updateTime(currentTime) {
+    this.videoCurrentTimeInSeconds = new Date(currentTime * 1000).toISOString().substr(11, 8);
+    this.progress.nativeElement.value = (100 / this.videoDuration) * currentTime;
+  }
+
+  onQualityChange() {
+    for (const qualityLevel of this.player.qualityLevels().levels_) {
+      if (qualityLevel.height >= this.hdResolution) {
+        qualityLevel.enabled = !this.qualityHDEnabled;
+      }
+    }
+    this.qualityHDEnabled = !this.qualityHDEnabled;
+  }
+
+  onPlay() {
+    this.player.play();
+  }
+
+  onPause() {
+    this.player.pause();
+  }
+
+  addBookmark() {
+    if (!this.player.currentTime()) {
+      return;
+    }
+    const bookmark = {
+      currentTimeInSeconds: this.player.currentTime(),
+      currentTime: this.videoCurrentTimeInSeconds,
+    };
+    this.bookmarkList.push(bookmark);
+  }
+
+  goToTime(e, time) {
+    e.preventDefault();
+    this.player.currentTime(time);
+  }
+
+  changeTime(time) {
+    this.updateTime(time);
+    this.player.currentTime(time);
   }
 
   ngOnInit() {
+    const videoProgressBar = this.progress.nativeElement;
     // instantiate Video.js
     this.player = videojs(this.target.nativeElement, this.options, function onPlayerReady() {
-      console.log('onPlayerReady', this);
-      console.log(this.qualityLevels());
+      let videoDuration: number;
+
+      this.one('loadedmetadata', () => {
+        videoDuration = this.duration();
+      });
     });
 
-    const qualityLevels = this.player.qualityLevels();
-
-    qualityLevels.on('addqualitylevel', (event) => {
-      const quality = event.qualityLevel;
-
-      // the master playlist doesn't seem to have a 720 width rendition
-      if (quality.width >= 720) {
-        quality.enabled = true;
-      } else {
-        quality.enabled = false;
-      }
-
-      console.log(quality.width + ': ' + quality.enabled);
-
-      this.toggleQuality = (() => {
-        let enable720 = true;
-
-        return () => {
-          for (let i = 0; i < qualityLevels.length; i++) {
-            const qualityLevel = qualityLevels[i];
-            if (qualityLevel.height >= 720) {
-              qualityLevel.enabled = enable720;
-              this.qualityBtnText = 'Quality HD';
-
-            } else {
-              qualityLevel.enabled = !enable720;
-              this.qualityBtnText = 'Quality SD';
-            }
-          }
-          enable720 = !enable720;
-        };
-      })();
+    this.player.one('loadedmetadata', () => {
+      this.videoDuration = this.player.duration();
     });
 
-    qualityLevels.on('change', () => {
-      console.log('Quality Level changed!');
-      console.log('New level:', qualityLevels[qualityLevels.selectedIndex]);
-      console.log(`currentSelectedQualityLevelIndex`, qualityLevels.selectedIndex);
+    this.player.on('timeupdate', () => {
+      this.videoCurrentTime = this.player.currentTime();
+      this.updateTime(this.player.currentTime());
+    });
+
+    const qualityLevelsList = this.player.qualityLevels();
+
+    qualityLevelsList.on('addqualitylevel', (qualityLevel) => {
+      this.qualityLevels.push(qualityLevel);
     });
   }
 

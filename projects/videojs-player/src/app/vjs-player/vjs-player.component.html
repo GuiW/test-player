@@ -1,7 +1,69 @@
-<div class="video-wrapper">
-  <video-js #target class="custom-vjs video-js" controls playsinline preload="none"></video-js>
+<div class="row">
 
-  <div class="btn-wrapper">
-    <button class="btn btn-info btn-lg" (click)="toggleQuality()">{{qualityBtnText}}</button>
+  <div class="col-lg-10">
+    <div class="video-wrapper">
+
+      <!-- VIDEO PLAYER -->
+      <video-js #target class="custom-vjs video-js" controls playsinline preload="none"></video-js>
+
+      <div class="video-controls">
+        <div class="video-controls__cta">
+          <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group" role="group" aria-label="First group">
+
+              <!-- PLAY BTN -->
+              <button class="btn btn-info btn-lg" (click)="onPlay()"><i class="fa fa-play"></i></button>
+
+              <!-- PAUSE BTN -->
+              <button class="btn btn-info btn-lg" (click)="onPause()"><i class="fa fa-pause"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROGRESS BAR -->
+        <div class="video-controls__progress">
+          <div class="progress-bar-container">
+            <progress id="progress-bar" #progress min='0' max='100' value='0'>0% played</progress>
+            <input class="progress-bar-seek" id="progress-bar-seek" #ref
+                   (ngModelChange)="changeTime(ref.value)"
+                   [(ngModel)]="videoCurrentTime"
+                   [max]="videoDuration"
+                   value="0"
+                   min="0"
+                   type="range"
+                   step="1">
+          </div>
+          <div class="progress-bar-seek-tooltip">{{ videoCurrentTimeInSeconds || '00:00:00' }}</div>
+        </div>
+
+        <div class="video-controls__cta">
+          <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group" role="group" aria-label="First group">
+
+              <!-- QUALITY BTN -->
+              <button class="quality-switch btn btn-info btn-lg"
+                      (click)="onQualityChange()">{{qualityHDEnabled ? 'SD' : 'HD'}}</button>
+
+              <!-- BOOKMARK BTN -->
+              <button class="btn btn-info btn-lg" (click)="addBookmark()"><i class="fa fa-bookmark"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKMARKS LIST -->
+  <div class="col-lg-2 mt-sm-4 mt-lg-0">
+    <div class="list-group" *ngIf="bookmarkList.length">
+      <div class="list-group-item list-group-item-info">
+        Bookmarks
+      </div>
+      <a *ngFor="let bookmark of bookmarkList" class="list-group-item list-group-item-action"
+         href="#" (click)="goToTime($event, bookmark.currentTimeInSeconds)">{{ bookmark.currentTime }}</a>
+    </div>
   </div>
 </div>
+
+
+
