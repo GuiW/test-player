@@ -1,0 +1,9 @@
+<div class="audio-player">
+  <h2>Audio player</h2>
+  <div id="mp3_player">
+    <button id="btn" class="btn btn btn-info btn-lg">
+      <i class="fa fa-play" [ngClass]="audioIsPlaying ? 'fa-pause' : 'fa-play' "></i>
+    </button>
+    <canvas id="analyser_render"></canvas>
+  </div>
+</div>
