@@ -25,7 +25,7 @@ export class AudioPlayerComponent implements OnInit {
   initMp3Player(): void {
     // Create audio player
     this.audio = new Audio();
-    this.audio.src = '../assets/audio/placeholder.mp3';
+    this.audio.src = 'assets/audio/placeholder.mp3';
 
     // Create canvas for analyser
     this.canvas = document.getElementById('analyser_render') as HTMLCanvasElement;
